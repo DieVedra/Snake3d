@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357692a3ff39cb74ba30751e23f464da, type: 3}
   m_Name: Game Data
   m_EditorClassIdentifier: 
-  ScoreToCompleteTheDay: 1e00000028000000320000003c00000050000000
+  ScoreToCompleteTheDay: 1f0000002a0000003500000040000000550000004200000043000000440000004500000047000000
   DurationOfDays: 64000000780000008c000000a0000000c8000000900100002003000040060000d0070000800c0000
   LastSceneIndex: 1
-  MaxOpenLvlSceneIndex: 1
-  MaxOpenDay: 1
+  MaxOpenLvlSceneIndex: 2
+  MaxOpenDay: 10
   LastCurrentDay: 1
-  FullScore: 73
+  FullScore: 1101
+  DifficultyLevelOfTheDay: 1.6

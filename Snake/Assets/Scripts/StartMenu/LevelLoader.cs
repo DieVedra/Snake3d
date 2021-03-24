@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class LevelLoader : MonoBehaviour
 {
-    [SerializeField] private Button _buttonLoad;
+    //[SerializeField] private Button _buttonRun;
     [SerializeField] private GameData _gameData;
     [SerializeField] private DawnAndSunsetLvl _dawnAndSunsetLvl;
     [SerializeField] private Image _image;
     [SerializeField] private Slider _slider;
     [SerializeField] private Text _text;
 
-
+    public void RunGame()
+    {
+        LoadGame(_gameData.LastSceneIndex);
+    }
     public void LoadGame(int index)
     {
         StartCoroutine(LoadLevelAcyng(index));
@@ -50,4 +53,12 @@ public class LevelLoader : MonoBehaviour
             yield return 0;
         }
     }
+    //private void OnEnable()
+    //{
+    //    _buttonRun.onClick.AddListener(RunGame);
+    //}
+    //private void OnDisable()
+    //{
+    //    _buttonRun.onClick.RemoveListener(RunGame);
+    //}
 }

@@ -38,27 +38,28 @@ public class Score : MonoBehaviour
     {
         ScoreValue += value;
         _gameData.FullScore += value;
-        _scoreText.text = "Score: " + ScoreValue + " /" + _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay];
+        _scoreText.text = "Score: " + ScoreValue + " /" + _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay -1];
 
         TryEnableExitLight();
     }
     private void TryEnableExitLight()
     {
-        if (CheckDatabaseScore())
+        if (CheckOfComplianceScore())
         {
             _pointLight.gameObject.SetActive(true);
         }
     }
 
-    public bool CheckDatabaseScore()
+    public bool CheckOfComplianceScore()
     {
-        if (ScoreValue >= _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay])
+        if (ScoreValue >= _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay -1 ])
         {
             return true;
         }
         else
         {
             return false;
+            Debug.Log(1);
         }
     }
 }

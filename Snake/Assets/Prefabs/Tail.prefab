@@ -122,7 +122,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4090649957984607331}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.76, y: 2.62, z: -1.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6487319480264848625}
@@ -158,6 +158,6 @@ MonoBehaviour:
   _listOfMovingBackwards: []
   _snakeController: {fileID: 0}
   _waySnake: {fileID: 0}
-  _pointToPointDelayTime: 0.3
-  _movementCountMaxValue: 7
+  _pointToPointDelayTime: 0.2
+  _movementCountMaxValue: 15
   Key: 1

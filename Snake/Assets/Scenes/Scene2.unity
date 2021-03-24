@@ -6227,7 +6227,7 @@ Transform:
   - {fileID: 223974227}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 60.2, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!1001 &711342893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20133,7 +20133,7 @@ MonoBehaviour:
   _buttonResume: {fileID: 2125536759}
   _levelLoader: {fileID: 1962025273}
   _dayCycle: {fileID: 1910379046}
-  _score: {fileID: 0}
+  _score: {fileID: 2120725315}
 --- !u!114 &1962025273
 MonoBehaviour:
   m_ObjectHideFlags: 0

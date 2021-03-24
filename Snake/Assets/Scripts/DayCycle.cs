@@ -36,30 +36,26 @@ public class DayCycle : MonoBehaviour
         {
             //if (Application.isPlaying)
             //{
-                TimeOfDay -= Time.deltaTime / _gameData.DurationOfDays[_gameData.LastCurrentDay];
-            //}
-            _dayIndicatorUI.fillAmount = TimeOfDay;
+                TimeOfDay -= Time.deltaTime / _gameData.DurationOfDays[_gameData.LastCurrentDay - 1];
+        //}
+        _dayIndicatorUI.fillAmount = TimeOfDay;
 
-            _sun.color = _gradientDirectionalLight.Evaluate(_sunCurve.Evaluate(TimeOfDay));
+            _sun.color = _gradientDirectionalLight.Evaluate(_sunCurve.Evaluate(TimeOfDay));  
 
-            if (TimeOfDay < 0.25f && TimeOfDay > 0f)
+            if (TimeOfDay < 0.4f && TimeOfDay > 0.2f) // плавное затемнение перед уходом солнца за горизонт
             {
-                _sun.intensity = Mathf.Lerp(0f, 1.2f , TimeOfDay);
+                _sun.intensity = Mathf.Lerp(0f, _sunIntensity, _sunCurve.Evaluate(TimeOfDay) - 0.2f );  // множитель 0,2f для корректировки
             }
-            //else
-            //{
-            //    _sun.intensity = _sunIntensity;
-            //}
 
             RenderSettings.ambientLight = _gradientAmbient.Evaluate(_sunCurve.Evaluate(TimeOfDay));
 
             RenderSettings.fogColor = _gradientFog.Evaluate(TimeOfDay);
 
             _sun.transform.localRotation = Quaternion.Euler(Mathf.Lerp(TimeEndDay, TimeStartDay, TimeOfDay), 0, 0);  //60 - 210
-        }
-        else if(TimeOfDay <= 0f)
-        {
-            TheDayIsOver?.Invoke(true);
+            if (TimeOfDay <= 0f)
+            {
+                TheDayIsOver?.Invoke(true);
+            }
         }
     }
 }

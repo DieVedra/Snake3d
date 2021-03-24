@@ -56,7 +56,7 @@ public class LevelMenu : MonoBehaviour
 
     private void CheckOverGame(bool gameOver)
     {
-        if (_score.CheckDatabaseScore())
+        if (!_score.CheckOfComplianceScore())
         {
             PauseGame(gameOver);
         }

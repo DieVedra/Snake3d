@@ -29,7 +29,7 @@ public class NextLevelHandler : MonoBehaviour
 
     private void CheckExitTheLevel()
     {
-        if (_score.ScoreValue >= _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay])
+        if (_score.ScoreValue >= _gameData.ScoreToCompleteTheDay[_gameData.LastCurrentDay - 1])
         {
             StartCoroutine(ExitTheLevel());
         }
@@ -54,19 +54,7 @@ public class NextLevelHandler : MonoBehaviour
 
         if (_gameData.DurationOfDays.Length != _gameData.LastCurrentDay)
         {
-            _gameData.LastCurrentDay++;
-            _gameData.DifficultyLevelOfTheDay += _difficultUp;
-            //_gameData.LastCurrentDay++;
-            if (_gameData.LastCurrentDay == 4 || _gameData.LastCurrentDay == 9)
-            {
-                _gameData.MaxOpenLvlSceneIndex++;
-            }
-            if (_gameData.MaxOpenDay < _gameData.LastCurrentDay)
-            {
-                _gameData.MaxOpenDay = _gameData.LastCurrentDay;
-            }
             _buttonNextDay.gameObject.SetActive(true);
-
         }
         else
         {
@@ -82,6 +70,23 @@ public class NextLevelHandler : MonoBehaviour
     }
     private void NextDay()
     {
+        if (_gameData.DurationOfDays.Length != _gameData.LastCurrentDay)
+        {
+            _gameData.LastCurrentDay++;
+            _gameData.DifficultyLevelOfTheDay += _difficultUp;
+            //_gameData.LastCurrentDay++;
+            if (_gameData.LastCurrentDay == 6 /*|| _gameData.LastCurrentDay == 10*/)
+            {
+                _gameData.MaxOpenLvlSceneIndex++;
+            }
+            if (_gameData.MaxOpenDay < _gameData.LastCurrentDay)
+            {
+                _gameData.MaxOpenDay = _gameData.LastCurrentDay;
+            }
+            _buttonNextDay.gameObject.SetActive(true);
+
+        }
+
         _levelLoader.LoadGame(_gameData.MaxOpenLvlSceneIndex);
     }
     private void OnDisable()

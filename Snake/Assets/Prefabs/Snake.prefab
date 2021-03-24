@@ -112,7 +112,7 @@ CapsuleCollider:
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
-  m_Direction: 1
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7921839288096328619
 Rigidbody:
@@ -146,9 +146,9 @@ MonoBehaviour:
   _segmentPrefab: {fileID: 4090649957984607331, guid: cc5f6409bdb02054fb1b13ec11a4566b, type: 3}
   _minSpeed: 3
   _maxSpeed: 8
-  _distanceBetweenSegments: 0.2
+  _distanceBetweenSegments: 0.25
   DelayCollisionWithWallTime: 1
-  _angleTurnJoystick: 1.5
+  _angleTurnJoystick: 2
   _angleTurnButtons: 1.5
   _tail: {fileID: 0}
   _detectorCollision: {fileID: 0}
@@ -395,7 +395,6 @@ GameObject:
   - component: {fileID: 6010423575287472973}
   - component: {fileID: 4555033592072560317}
   - component: {fileID: 182202058491181592}
-  - component: {fileID: 530625029803708359}
   m_Layer: 0
   m_Name: Capsule (1)
   m_TagString: Untagged
@@ -466,17 +465,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &530625029803708359
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8618837977492077861}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.50000024
-  m_Height: 2.000001
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.000000059604076, z: 0.000007629398}
