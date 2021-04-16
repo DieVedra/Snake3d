@@ -37,6 +37,7 @@ public class LevelLoader : MonoBehaviour
         //_startAnim
 
         AsyncOperation asyngLoad = SceneManager.LoadSceneAsync(SceneIndex);
+        //AsyncOperation.
 
         asyngLoad.allowSceneActivation = false;
 
@@ -48,6 +49,7 @@ public class LevelLoader : MonoBehaviour
             if (asyngLoad.progress >= .9f && !asyngLoad.allowSceneActivation /*&& nextScene*/)
             {
                 asyngLoad.allowSceneActivation = true;
+                //asyngLoad.completed?.Invoke();
             }
 
             yield return 0;

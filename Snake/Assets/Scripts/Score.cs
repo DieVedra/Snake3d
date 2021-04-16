@@ -17,11 +17,15 @@ public class Score : MonoBehaviour
     [SerializeField] private EaterSegments _eaterSegments;
     [SerializeField] private Light _pointLight;
 
-
-    private void Start()
+    private void Awake()
     {
         _detectorCollision = FindObjectOfType<DetectorCollision>();
         _eaterSegments = FindObjectOfType<EaterSegments>();
+    }
+    private void Start()
+    {
+        //_detectorCollision = FindObjectOfType<DetectorCollision>();
+        //_eaterSegments = FindObjectOfType<EaterSegments>();
         _eaterSegments.DecreaseScore += ScoreUpdate;
         _detectorCollision.OnEat += ScoreUpdate;
         ScoreUpdate(ScoreValue);
@@ -59,7 +63,7 @@ public class Score : MonoBehaviour
         else
         {
             return false;
-            Debug.Log(1);
+            //Debug.Log(1);
         }
     }
 }

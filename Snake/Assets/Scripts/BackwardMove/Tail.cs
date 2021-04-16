@@ -10,7 +10,6 @@ public class Tail : MonoBehaviour
 
     [SerializeField] private SnakeController _snakeController;
     [SerializeField] private WaySnake _waySnake;
-    //[SerializeField] private DetectorCollision _detectorCollision;
 
 
     [SerializeField] private float _pointToPointDelayTime;
@@ -18,12 +17,13 @@ public class Tail : MonoBehaviour
     [SerializeField] private int _movementCountMaxValue;
 
     public bool Key = true;
-
-    private void Start()
+    private void Awake()
     {
         _waySnake = GetComponent<WaySnake>();
+    }
+    private void Start()
+    {
         _snakeController = FindObjectOfType<SnakeController>();
-        //_detectorCollision = FindObjectOfType<DetectorCollision>();
         _snakeController.TailMoveActionForward += MoveTail;
     }
     private void MoveTail(Vector3 pos, Quaternion rot, float sqrDistance) // передвижение обьекта "Хвост" вперед или назад

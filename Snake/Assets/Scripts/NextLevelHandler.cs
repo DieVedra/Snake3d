@@ -14,14 +14,20 @@ public class NextLevelHandler : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera _cmExitLvl;
     [SerializeField] private Button _buttonNextDay;
     [SerializeField] private Button _buttonResume;
+    [SerializeField] private Text _endGameText;
     [SerializeField] private GameObject _panelPauseMenu;
     //[SerializeField] private Light _pointLight;
     [SerializeField] private float _timeWait;
     [SerializeField] private float _difficultUp;
-    private void Start()
+    private void Awake()
     {
         _detectorCollision = FindObjectOfType<DetectorCollision>();
         _score = FindObjectOfType<Score>();
+    }
+    private void Start()
+    {
+        //    _detectorCollision = FindObjectOfType<DetectorCollision>();
+        //    _score = FindObjectOfType<Score>();
 
         _detectorCollision.TryToExitTheLevel += CheckExitTheLevel;
         _buttonNextDay.onClick.AddListener(NextDay);
@@ -59,35 +65,41 @@ public class NextLevelHandler : MonoBehaviour
         else
         {
             _buttonNextDay.gameObject.SetActive(false);
+            _endGameText.gameObject.SetActive(true);
         }
 
         yield return new WaitForSeconds(_timeWait);
 
         _panelPauseMenu.SetActive(true);
         _buttonResume.gameObject.SetActive(false);
+
+        MonsterMove.IsMove = false;
         //_buttonNextDay.gameObject.SetActive(true);
 
     }
     private void NextDay()
     {
-        if (_gameData.DurationOfDays.Length != _gameData.LastCurrentDay)
-        {
-            _gameData.LastCurrentDay++;
-            _gameData.DifficultyLevelOfTheDay += _difficultUp;
-            //_gameData.LastCurrentDay++;
-            if (_gameData.LastCurrentDay == 6 /*|| _gameData.LastCurrentDay == 10*/)
-            {
-                _gameData.MaxOpenLvlSceneIndex++;
-            }
-            if (_gameData.MaxOpenDay < _gameData.LastCurrentDay)
-            {
-                _gameData.MaxOpenDay = _gameData.LastCurrentDay;
-            }
-            _buttonNextDay.gameObject.SetActive(true);
+         if (_gameData.LastCurrentDay < 10)
+         {
+             _gameData.LastCurrentDay++;
+         }
 
-        }
+         _gameData.DifficultyLevelOfTheDay += _difficultUp;
+            
+            
+         if (_gameData.LastCurrentDay == 6 )
+         {
+            _gameData.MaxOpenLvlSceneIndex = 2;
+         }
+         if (_gameData.MaxOpenDay < _gameData.LastCurrentDay)
+         {
+             _gameData.MaxOpenDay = _gameData.LastCurrentDay;
+         }
+         //_buttonNextDay.gameObject.SetActive(true);
 
-        _levelLoader.LoadGame(_gameData.MaxOpenLvlSceneIndex);
+        
+         _levelLoader.LoadGame(_gameData.MaxOpenLvlSceneIndex);
+        
     }
     private void OnDisable()
     {

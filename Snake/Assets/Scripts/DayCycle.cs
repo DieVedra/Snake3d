@@ -8,37 +8,39 @@ using UnityEngine.UI;
 public class DayCycle : MonoBehaviour
 {
     [Range(1, 0)] public float TimeOfDay;
-    public float TimeStartDay;
-    public float TimeEndDay;
+    private float _timeStartDay = 60f;
+    private float _timeEndDay = 210f;
+    [SerializeField] private float _startMonster = 0.22f;
+    public float StartMonster => _startMonster;
 
     [SerializeField] private Image _dayIndicatorUI;
     [SerializeField] private AnimationCurve _sunCurve;
     [SerializeField] private Light _sun;
+    [SerializeField] private GameObject _monster;
 
     [SerializeField] private Gradient _gradientAmbient;
     [SerializeField] private Gradient _gradientFog;
     [SerializeField] private Gradient _gradientDirectionalLight;
 
     [SerializeField] private GameData _gameData;
+    [SerializeField] private Transform _transformSun;
     //[SerializeField] private Score _score;
 
     public UnityAction<bool> TheDayIsOver;
+    //public UnityAction<bool> StartMonster;
 
     private float _sunIntensity;
     private void Start()
     {
-        _sun.transform.rotation = Quaternion.Euler(TimeStartDay, 0f, 0f);
+        _sun.transform.rotation = Quaternion.Euler(_timeStartDay, 0f, 0f);
         _sunIntensity = _sun.intensity;
     }
     private void Update()
     {
         if (TimeOfDay >= 0f)
         {
-            //if (Application.isPlaying)
-            //{
-                TimeOfDay -= Time.deltaTime / _gameData.DurationOfDays[_gameData.LastCurrentDay - 1];
-        //}
-        _dayIndicatorUI.fillAmount = TimeOfDay;
+            TimeOfDay -= Time.deltaTime / _gameData.DurationOfDays[_gameData.LastCurrentDay - 1];
+            _dayIndicatorUI.fillAmount = TimeOfDay;
 
             _sun.color = _gradientDirectionalLight.Evaluate(_sunCurve.Evaluate(TimeOfDay));  
 
@@ -51,11 +53,20 @@ public class DayCycle : MonoBehaviour
 
             RenderSettings.fogColor = _gradientFog.Evaluate(TimeOfDay);
 
-            _sun.transform.localRotation = Quaternion.Euler(Mathf.Lerp(TimeEndDay, TimeStartDay, TimeOfDay), 0, 0);  //60 - 210
-            if (TimeOfDay <= 0f)
+            _transformSun.localRotation = Quaternion.Euler(Mathf.Lerp(_timeEndDay, _timeStartDay, TimeOfDay), 0, 0);  //60 - 210
+
+            if (TimeOfDay < _startMonster)
             {
-                TheDayIsOver?.Invoke(true);
+                _monster.gameObject.SetActive(true);
             }
+            //if (StartMonster < )
+            //{
+
+                //}
+                //if (TimeOfDay <= 0f)
+                //{
+                //    TheDayIsOver?.Invoke(true);
+                //}
         }
     }
 }

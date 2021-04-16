@@ -10,10 +10,16 @@ public class EaterSegments : MonoBehaviour
     //[SerializeField] private Score _score;
 
     public UnityAction<int> DecreaseScore;
-    private void Start()
+
+    private void Awake()
     {
         _detectorCollision = FindObjectOfType<DetectorCollision>();
         _snakeController = FindObjectOfType<SnakeController>();
+    }
+    private void Start()
+    {
+        //_detectorCollision = FindObjectOfType<DetectorCollision>();
+        //_snakeController = FindObjectOfType<SnakeController>();
         //_score = FindObjectOfType<Score>();
 
         _detectorCollision.EatSegments += DeleterSegments;

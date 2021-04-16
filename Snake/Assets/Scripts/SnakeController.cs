@@ -33,6 +33,8 @@ public class SnakeController : MonoBehaviour
     private SwitchControll _switchControl;
     [SerializeField] private Tail _tail;
     [SerializeField] private DetectorCollision _detectorCollision;
+    private Transform _transform;
+    private Rigidbody _rigidbody;
 
 
     //public delegate void ScoreUpdate(int value);
@@ -42,10 +44,12 @@ public class SnakeController : MonoBehaviour
     private void Awake()
     {
         _sliderSpeed = GameObject.Find("SliderSpeed").GetComponent<Slider>();
-        _joystick = GameObject.Find("Control").GetComponentInChildren<Joystick>();
-        _switchControl = GameObject.Find("Control").GetComponent<SwitchControll>();
+        _joystick = FindObjectOfType<Joystick>();
+        _switchControl = FindObjectOfType<SwitchControll>();
         _tail = FindObjectOfType<Tail>();
         _detectorCollision = FindObjectOfType<DetectorCollision>();
+        _transform = GetComponent<Transform>();
+        _rigidbody = GetComponent<Rigidbody>();
 
         _sqrDistance = _distanceBetweenSegments * _distanceBetweenSegments;
         MoveForward = true;
@@ -57,39 +61,45 @@ public class SnakeController : MonoBehaviour
         _speed = _minSpeed;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (MoveForward)
         {
-            MoveHead(transform.position + transform.forward * _speed * Time.deltaTime);
+            MoveHead(_transform.position + _transform.forward * _speed);
+            //MoveHead(_transform.forward * _speed);
+            //MoveHead(new Vector3(0f, 0f, _speed));
+
         }
         else
         {
             _tail.MoveSnakeBackwards();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            CreateSegment(1);
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    CreateSegment(1);
+        //}
     }
 
     private void MoveHead(Vector3 newPosition)
     {
-        transform.position = newPosition;
+        _transform.position = newPosition;
+        //_rigidbody.AddRelativeForce(newPosition);
+
 
         if (!_switchControl.Switched)
         {
             _angle = _joystick.Horizontal * _angleTurnJoystick * _sliderSpeed.value /** -1f*/;
         }
 
-        transform.Rotate(0f, _angle, 0f);
+        //_rigidbody.AddRelativeTorque(0f, _angle, 0f);
+        _transform.Rotate(0f, _angle, 0f);
 
-        MoveSegments(_segments, transform.position - transform.forward * 0.2f, transform.rotation);
+        MoveSegments(_segments, _transform.position - _transform.forward * 0.2f, _transform.rotation);
 
         if (_segments.Count == 0)
         {
-            TailMoveActionForward?.Invoke(transform.position - transform.forward * 0.2f, transform.rotation, _sqrDistance);
+            TailMoveActionForward?.Invoke(_transform.position - _transform.forward * 0.2f, _transform.rotation, _sqrDistance);
         }
     }
     public void MoveSegments(List<GameObject> givenSegments, Vector3 position, Quaternion rotation)
@@ -124,8 +134,8 @@ public class SnakeController : MonoBehaviour
     {
         for (int i = 0; i < segmentCreateCount; i++)
         {
-            Vector3 pointCreatePosition = transform.position - transform.forward * 0.2f;
-            Quaternion pointCreateRotation = transform.rotation;
+            Vector3 pointCreatePosition = _transform.position - _transform.forward * 0.2f;
+            Quaternion pointCreateRotation = _transform.rotation;
 
             if (_segments.Count > 0)
             {

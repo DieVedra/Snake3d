@@ -15,6 +15,11 @@ public class FoodSpawner : MonoBehaviour
 
     private int _amountOfFoodPerSpawn;
 
+    [SerializeField] private ParticleSystem _spawnEffect;
+    [SerializeField] private ParticleSystem _spawnEffectChild;
+    private AudioSource _audioSource;
+    [SerializeField] private AudioClip _spawnClip;
+
     [SerializeField] private List<GameObject> FoodsPrefabs;
     [SerializeField] private List<GameObject> ObstaclePrefabs;
 
@@ -25,56 +30,61 @@ public class FoodSpawner : MonoBehaviour
     {
         _detectorCollision = FindObjectOfType<DetectorCollision>();
         _detectorCollision.OnEat += AmountOfFoodPerSpawnCounter;
+        _audioSource = _spawnEffect.gameObject.GetComponent<AudioSource>();
+        _audioSource.clip = _spawnClip;
 
         CheckingNumbersPoints();
         _countTriangle = _pointsBorderSpawnZone.Length / 2;
-        //_detectorCollision = FindObjectOfType<DetectorCollision>();
         DoSpawnFood = true;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (DoSpawnFood)
         {
             if (TimeToSpawn < 0)
             {
                 TimeToSpawn += TimeSpawn;
-                SpawnFood();
-                //TryObstacleSpawned();
+                StartCoroutine(SpawnFoodAndObstacle());
             }
             TimeToSpawn -= Time.deltaTime;
         }
     }
-
-    private void SpawnFood()
+    private IEnumerator SpawnFoodAndObstacle()
     {
-        //int indexNumber = CreateRandomIndexTriangle();
-        _amountOfFoodPerSpawn = Random.Range(1, 20);
+        _amountOfFoodPerSpawn = Random.Range(1, 10);
         _amountOfFoodPerSpawn += (int)_gameData.DifficultyLevelOfTheDay;
 
         for (int i = 0; i < _amountOfFoodPerSpawn; i++)
         {
-            int indexNumber = CreateRandomIndexTriangle();
+            Spawner(FoodsPrefabs[Random.Range(0, FoodsPrefabs.Count)], Quaternion.identity);
 
-            Instantiate(FoodsPrefabs[Random.Range(0, FoodsPrefabs.Count)],
-                        CalculationCoordinatesPoint(_pointsBorderSpawnZone[indexNumber].transform.position,
-                                                 _pointsBorderSpawnZone[indexNumber + 1].transform.position,
-                                                 _pointsBorderSpawnZone[indexNumber + 2].transform.position),
-                        Quaternion.identity);
+            yield return new WaitForSeconds(0.8f);
         }
+
+        yield return new WaitForSeconds(0.8f);
 
         if (TryObstacleSpawned())
         {
-            int indexNumber = CreateRandomIndexTriangle();
-
-            Instantiate(ObstaclePrefabs[Random.Range(0, ObstaclePrefabs.Count)],
-                        CalculationCoordinatesPoint(_pointsBorderSpawnZone[indexNumber].transform.position,
-                                                 _pointsBorderSpawnZone[indexNumber + 1].transform.position,
-                                                 _pointsBorderSpawnZone[indexNumber + 2].transform.position),
-                        Quaternion.Euler(0f, GetRandomValue() * 180f, 0f));
+            Spawner(ObstaclePrefabs[Random.Range(0, ObstaclePrefabs.Count)], Quaternion.Euler(0f, GetRandomValue() * 180f, 0f));
         }
 
-
         DoSpawnFood = false;
+    }
+
+    private void Spawner(GameObject objectToSpawn, Quaternion rotattion)
+    {
+        int indexNumber = CreateRandomIndexTriangle();
+
+        Vector3 coordinates = CalculationCoordinatesPoint(_pointsBorderSpawnZone[indexNumber].transform.position,
+                                                 _pointsBorderSpawnZone[indexNumber + 1].transform.position,
+                                                 _pointsBorderSpawnZone[indexNumber + 2].transform.position);
+
+        _spawnEffect.gameObject.transform.position = coordinates;
+        _spawnEffect.Play();
+        _spawnEffectChild.Play();
+        _audioSource.Play();
+
+        Instantiate(objectToSpawn, coordinates, rotattion);
     }
 
     private bool TryObstacleSpawned()
@@ -118,12 +128,6 @@ public class FoodSpawner : MonoBehaviour
 
         return point122331;
     }
-
-    //public void DoSpawn()
-    //{
-    //    _doSpawnFood = true;
-    //}
-
     private float GetRandomValue()
     {
         return Random.Range(0f, 1.01f);
@@ -138,7 +142,6 @@ public class FoodSpawner : MonoBehaviour
             DoSpawnFood = true;
         }
     }
-
     private void CheckingNumbersPoints()
     {
         if (_pointsBorderSpawnZone.Length < 4 || _pointsBorderSpawnZone.Length % 4 != 0 )
@@ -155,7 +158,6 @@ public class FoodSpawner : MonoBehaviour
             DrawQuadrilaterals(i);
         }
     }
-
     private void DrawQuadrilaterals(int index)
     {
         Gizmos.DrawLine(_pointsBorderSpawnZone[index].transform.position, _pointsBorderSpawnZone[index + 1].transform.position);     // 1 - 2   0, 0+1
@@ -163,13 +165,6 @@ public class FoodSpawner : MonoBehaviour
         Gizmos.DrawLine(_pointsBorderSpawnZone[index + 3].transform.position, _pointsBorderSpawnZone[index + 2].transform.position); // 4 - 3   0+3, 0+2
         Gizmos.DrawLine(_pointsBorderSpawnZone[index + 2].transform.position, _pointsBorderSpawnZone[index].transform.position);     // 3 - 1   0+2, 0
     }
-
-    //private void OnEnable()
-    //{
-    //    _detectorCollision = FindObjectOfType<DetectorCollision>();
-    //    _detectorCollision.OnEat += AmountOfFoodPerSpawnCounter;
-    //}
-
     private void OnDisable()
     {
         _detectorCollision.OnEat -= AmountOfFoodPerSpawnCounter;

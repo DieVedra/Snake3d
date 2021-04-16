@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//[System.Serializable]
 public  class WaySnake : MonoBehaviour
 {
     // должен сохранять последние несколько точек пути для движения назад
